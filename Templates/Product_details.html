@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/header.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/details.css') }}">
+
+    <title>{{ product.product_name }}</title>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="#"><img src="{{ url_for('static', filename='images/logoo_blue.jpeg') }}" alt="Logo"></a>
+      </div>
+      <div class="menu-toggle">
+        <i class="material-icons">menu</i>
+      </div>
+      <nav class="show-menu">
+        <ul>
+          <li><a href="{{ url_for('products') }}">Home</a></li>
+          <li><a href="{{ url_for('customer_orders') }}">Orders</a></li>
+          <li>
+            <form action="/search" method="GET">
+              <input type="search" name="query" placeholder="Search the store...">
+              <button type="submit"><i class="material-icons">search</i></button>
+            </form>
+          </li>
+        </ul>
+      </nav>
+      {% if 'id' in session %}
+          <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+      {% else %}
+          <a href="{{ url_for('login') }}" class="login-button">Login</a>
+      {% endif %} 
+    </div>
+</header>
+
+    <nav class="show-product">
+        <ul>
+          <li>
+            <h1>{{ product.product_name }}</h1>
+            <img src="{{ url_for('get_image', product_id=product.product_id) }}" alt="{{ product.product_name }}">
+            <p>Subcategory: {{ product.sub_category }}</p>
+            <p>Price: {{ product.price }} EGP</p>
+            <p>Size: {{ product.size }}</p>
+        
+            <div id="quantityDisplay">Quantity in Hand: <span id="quantity">0</span></div>
+
+            <form id="product-form" method="POST" action="{{ url_for('confirm_order') }}">
+                <input type="hidden" name="product_id" value="{{ product.product_id }}">
+
+                <label for="state">State</label>
+                <select name="state" id="state">
+                  {% for state in states %}
+                      <option value="{{ state }}">{{ state }}</option>
+                  {% endfor %}
+              </select>
+
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" name="quantity" min="1" value="1">
+            
+                <label for="priority">Priority </label>
+                <select id="priority" name="priority">
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+
+                <button type="submit">Confirm order</button>
+              </form>
+          </li>
+        </ul>
+      </nav>
+      <script>
+        document.getElementById('state').addEventListener('change', function() {
+            const state = this.value;
+            const productId = "{{ product.product_id }}";
+            fetch('/inventory_quantity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `product_id=${productId}&state=${state}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('quantity').innerText = data.quantity_in_hand;
+            });
+        });
+      </script>
+      <footer>
+            <div class="container">
+    
+              <div class="footer-columns">
+                <div class="footer-column">
+                  <h3>Eagle</h3>
+                  <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="footer-bottom">
+                <p>© 2024 Eagle. All Rights Reserved.</p>
+              </div>
+            </div>
+      </footer>
+</body>
+</html>

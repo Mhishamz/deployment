@@ -1,0 +1,76 @@
+
+
+nav img {
+    max-width: 50%;
+}
+
+button {
+    margin-top: 10px;
+}
+
+.show-product{
+    max-width: 800px;
+    margin: 70px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+nav ul {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    list-style: none;
+    margin:  0;
+    padding: 0;
+  }
+  
+  nav li {
+    margin: 0 10px;
+  }
+  
+
+  nav a:hover {
+    color: #ff6f00;
+  }
+  
+  nav form {
+    display: flex;
+    justify-content: flex-left;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  nav input[id="quantity"] {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  nav select[id="priority"] {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+  } 
+   nav select[id="state"] {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  nav button[type="submit"] {
+    background-color: #ff6f00;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  nav button[type="submit"]:hover {
+    background-color: #333;
+  }
+  

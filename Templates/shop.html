@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/shop.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/header.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/footer.css') }}">
+    <script src="{{ url_for('static', filename='scripts/shop.js') }}"></script>
+    <title>Eagle Shop</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+          <div class="logo">
+            <a href="#"><img src="{{ url_for('static', filename='images/logoo_blue.jpeg') }}" alt="Logo"></a>
+          </div>
+          <div class="menu-toggle">
+            <i class="material-icons">menu</i>
+          </div>
+          <nav class="show-menu">
+            <ul>
+              <li><a href="{{ url_for('products') }}">Home</a></li>
+              <li><a href="{{ url_for('customer_orders') }}">Orders</a></li>
+              <li>
+                <form action="/search" method="GET">
+                  <input type="search" name="query" placeholder="Search the store...">
+                  <button type="submit"><i class="material-icons">search</i></button>
+                </form>
+              </li>
+            </ul>
+          </nav>
+          {% if 'id' in session %}
+              <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+          {% else %}
+              <a href="{{ url_for('login') }}" class="login-button">Login</a>
+          {% endif %} 
+        </div>
+    </header>
+    <div class="shop-container">
+        <div class="category-container">
+            <h3>Categories</h3>
+            <ul id="category-list">
+                <li data-category="all" class="active">All</li>
+                <li data-category="Office Supplies">Office Supplies</li>
+                <li data-category="Technology">Technology</li>
+                <li data-category="Furniture">Furniture</li>
+            </ul>
+        </div>
+        <div id="message"></div>
+        <div id="cart-items"></div>
+        <ul id="product-list">
+          {% for product in products %}
+          <li data-category="{{ product.category }}">
+              <img src="{{ url_for('get_image', product_id=product.product_id) }}" alt="{{ product.product_name }}">
+              <h3>{{ product.product_name }}</h3>
+              <p>Subcategory: {{ product.sub_category }}</p>
+              <p class="price">Price:  {{ product.price }} EGP</p>
+              <p>Size: {{ product.size }}</p>
+              <button onclick="openProductPage('{{ product.product_id }}')">Add to Cart</button>
+            </li>
+          {% endfor %}
+      </ul>
+    </div>
+    <footer>
+        <div class="container">
+
+          <div class="footer-columns">
+            <div class="footer-column">
+              <h3>Eagle</h3>
+              <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms & Conditions</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p>© 2024 Eagle. All Rights Reserved.</p>
+          </div>
+        </div>
+    </footer>
+</body>
+</html>

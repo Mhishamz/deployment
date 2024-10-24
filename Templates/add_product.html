@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/Admin_products.css') }}">
+</head>
+<body>
+    <h1>Add Product</h1>
+    <form method="POST" enctype="multipart/form-data">
+
+        <label for="product_name">Product Name:</label>
+        <input type="text" name="product_name" required>
+        <label for="category">Category:</label>
+        <input type="text" name="category" required>
+        <label for="sub_category">Sub-Category:</label>
+        <input type="text" name="sub_category" required>
+        <label for="price">Price:</label>
+        <input type="number" step="0.01" name="price" required>
+        <label for="size">Size:</label>
+        <input type="number" step="0.01" name="size" required>
+        <label for="image">Image:</label>
+        <input type="file" name="image">
+        <button type="submit">Add Product</button>
+    </form>
+</body>
+</html>

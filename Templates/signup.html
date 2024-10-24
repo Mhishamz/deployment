@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/signup.css') }}">
+    <title>Eagle: Sign Up</title>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='images/logoo.jpeg') }}" alt="logoo.jpeg" class="eagle">
+        <h1>Sign Up to Eagle</h1>
+        <form id="signin-form" action="signup" method="POST">
+            {% if error_message %}
+                <div class="alert alert-danger" style="color: red;">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+            <input type="text" id="name" name="name" placeholder="Name" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>           
+            <input type="password" id="password" name="password" placeholder="Password" required>   
+            <select id="segment" name="segment" required>
+                <option value="" disabled selected>Segment</option>
+
+                <option value="Consumer">Consumer</option>
+                <option value="Home Office">Home Office</option>
+                <option value="Corporate">Corporate</option>
+            </select> 
+            <input type="submit" value="Sign Up">
+            <p>Already have an account? <a class="a-link" href="{{ url_for('login') }}">Sign In</a></p>
+        </form>
+    </div>
+    <footer>
+        <div class="footer-bottom">
+            <p>© 2024 Eagle. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

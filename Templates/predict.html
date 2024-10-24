@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Sales</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/predict.css') }}">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <canvas id="myChart"></canvas>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+          <div class="logo">
+            <a href="#"><img src="{{ url_for('static', filename='images/logoo_blue.jpeg') }}" alt="Logo"></a>
+          </div>
+          <nav class="show-menu">
+            <ul>
+              <li><a href="{{ url_for('admin') }}">Home</a></li>
+              <li><a href="{{ url_for('predict') }}">Predict</a></li>
+              <li><a href="{{ url_for('add_product') }}">Add Product</a></li>
+            </ul>
+          </nav>
+          {% if 'id' in session %}
+              <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+          {% else %}
+              <a href="{{ url_for('login') }}" class="login-button">Login</a>
+          {% endif %} 
+        </div>
+    </header>
+    <div class="containerr">
+        <h1>Sales Prediction For Sub Categories Per Quantiles</h1>
+        
+        <form method="POST" action="{{ url_for('predict') }}">
+            <div class="form-group">
+                <label for="sub_category">Sub-Category:</label>
+                <select name="sub_category" id="sub_category" required>
+                    {% for sub_category in sub_categories %}
+                    <option value="{{ sub_category }}">{{ sub_category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <select name="country" id="country" required>
+                    {% for country in countries %}
+                    <option value="{{ country }}">{{ country }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="quartile">Quartile:</label>
+                <select name="quartile" id="quartile" required>
+                    {% for quartile in quartiles %}
+                    <option value="{{ quartile }}">{{ quartile }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction is not none %}
+        <div class="prediction-result">
+            <h2>Predicted Sales: ${{ prediction }}</h2>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/header.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/footer.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/orders.css') }}">
+
+    <title>Customer Orders</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+          <div class="logo">
+            <a href="#"><img src="{{ url_for('static', filename='images/logoo_blue.jpeg') }}" alt="Logo"></a>
+          </div>
+          <div class="menu-toggle">
+            <i class="material-icons">menu</i>
+          </div>
+          <nav class="show-menu">
+            <ul>
+              <li><a href="{{ url_for('products') }}">Home</a></li>
+              <li><a href="{{ url_for('customer_orders') }}">Orders</a></li>
+              <li>
+                <form action="/search" method="GET">
+                  <input type="search" name="query" placeholder="Search the store...">
+                  <button type="submit"><i class="material-icons">search</i></button>
+                </form>
+              </li>
+            </ul>
+          </nav>
+          {% if 'id' in session %}
+              <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+          {% else %}
+              <a href="{{ url_for('login') }}" class="login-button">Login</a>
+          {% endif %} 
+        </div>
+    </header>
+
+    <h1>Your Orders</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Items</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.order_id }}</td>
+                <td>{{ order.order_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ order.order_status }}</td>
+                <td>{{ order.order_priority }}</td>
+                <td>
+                    <ul>
+                        {% for item in order.order_items %}
+                        <li>{{ item.product_id }} ({{ item.quantity }}) - {{ item.sales }} EGP</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">No orders found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+</html>

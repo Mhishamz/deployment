@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/header.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/shop.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+          <div class="logo">
+            <a href="#"><img src="{{ url_for('static', filename='images/logoo_blue.jpeg') }}" alt="Logo"></a>
+          </div>
+          <nav class="show-menu">
+            <ul>
+              <li><a href="{{ url_for('admin') }}">Home</a></li>
+              <li><a href="{{ url_for('predict') }}">Predict</a></li>
+              <li><a href="{{ url_for('add_product') }}">Add Product</a></li>
+            </ul>
+          </nav>
+          {% if 'id' in session %}
+              <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+          {% else %}
+              <a href="{{ url_for('login') }}" class="login-button">Login</a>
+          {% endif %} 
+        </div>
+    </header>
+    <form method="GET" action="{{ url_for('admin') }}">
+        <input type="text" name="search" placeholder="Search products..." value="{{ search_query }}" class="input-wide">
+        <button type="submit">Search</button>
+    </form>
+    <ul id="product-list">
+        {% for product in products %}
+        <li data-category="{{ product.category }}">
+            <img src="{{ url_for('get_image', product_id=product.product_id) }}" alt="{{ product.product_name }}">
+            <h3>{{ product.product_name }}</h3>
+            <p>Subcategory: {{ product.sub_category }}</p>
+            <p class="price">Price:  {{ product.price }} EGP</p>
+            <p>Size: {{ product.size }}</p>
+            <form action="{{ url_for('edit_product', product_id=product.product_id) }}" method="GET" style="display:inline;">
+                <button type="submit">Edit</button>
+            </form>
+            <form action="{{ url_for('delete_product', product_id=product.product_id) }}" method="POST" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
